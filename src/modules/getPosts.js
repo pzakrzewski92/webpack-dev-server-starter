@@ -1,22 +1,22 @@
+import {POSTS_API_URL, POSTS_PER_PAGE } from "./constants";
+
 const getPosts = (page) => {
-    let postListMarkup = "";
     const params = new URLSearchParams({
       _limit: POSTS_PER_PAGE,
       _page: page,
     });
+
     fetch(POSTS_API_URL + "?" + params)
-      .then((response) => response.json())
+      .then((response) => {
+        console.log(response);
+        if(!response.ok) {
+throw new Error(response.status);
+        }
+      })
       .then((posts) => {
-        posts.forEach((post) => {
-          postListMarkup += `
-              <li>
-                  <h3>${post.title}</h3>
-                  <p>${post.body}</p>
-              </li>
-          `;
-        });
-        // adding posts markup to DOM
-        postsContainer.innerHTML = postListMarkup;
+callback(posts);
+      }).catch((error) => {
+        console.log("Inside getPosts we have an error", error);
       });
   };
-  
+  export default getPosts;
